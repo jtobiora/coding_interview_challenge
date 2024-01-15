@@ -34,7 +34,7 @@ public class TransactionController {
 
             //checks if the transaction is in the future
             if (transactionTime.isAfter(currentTime)) {
-                log.info("Transaction time: {} is greater than current time", transactionTime);
+                log.info("Transaction time: {} is greater than current time in UTC", transactionTime);
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
             }
 
@@ -58,6 +58,7 @@ public class TransactionController {
      * */
     @GetMapping("/statistics")
     public ResponseEntity<TransactionStatistics> getStatistics() {
+        log.info("Getting transaction statistics");
         return ResponseEntity.ok(transactionService.getStatistics());
     }
 
