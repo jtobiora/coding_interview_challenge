@@ -20,9 +20,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class TransactionService {
-
-    //private static final Queue<Transaction> transactions = new ConcurrentLinkedQueue<>();//to ensure thread safety with concurrent requests
-
     private static final List<Transaction> transactions = new CopyOnWriteArrayList<>();//to ensure thread safety with concurrent requests
 
     private static final int WINDOW_SIZE_SECONDS = 30; // Define the time window for recent transactions
@@ -79,7 +76,5 @@ public class TransactionService {
         log.info("Cleaned up old transactions at {}", Instant.now());
     }
 
-//  public static List<Transaction> getTransactions () {
-//        return new ArrayList<>(transactions);
-//  }
+
 }
