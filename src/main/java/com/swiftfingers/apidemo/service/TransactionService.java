@@ -4,6 +4,7 @@ import com.swiftfingers.apidemo.model.Transaction;
 import com.swiftfingers.apidemo.model.TransactionRequest;
 import com.swiftfingers.apidemo.model.TransactionStatistics;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,9 +29,6 @@ public class TransactionService {
 
     public void addTransaction (TransactionRequest request, Instant transactionTime) {
         BigDecimal amount = new BigDecimal(request.getAmount());
-
-        // Remove older transactions outside the time window
-        transactions.removeIf(transaction -> transaction.getTimestamp().isBefore(transactionTime.minusSeconds(WINDOW_SIZE_SECONDS)));
 
         transactions.add(new Transaction(amount, transactionTime));
     }
@@ -74,7 +72,14 @@ public class TransactionService {
         return transactions;
     }
 
-//    public static List<Transaction> getTransactions () {
+    @Scheduled(fixedRate = 30000) // Scheduled task runs every 30 seconds
+    public void cleanUpOldTransactions() {
+        Instant oldestAllowedTime = Instant.now().minusSeconds(WINDOW_SIZE_SECONDS);
+        transactions.removeIf(transaction -> transaction.getTimestamp().isBefore(oldestAllowedTime));
+        log.info("Cleaned up old transactions at {}", Instant.now());
+    }
+
+//  public static List<Transaction> getTransactions () {
 //        return new ArrayList<>(transactions);
-//    }
+//  }
 }
