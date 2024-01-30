@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
@@ -17,11 +20,18 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TransactionService {
 
+    //private static final Queue<Transaction> transactions = new ConcurrentLinkedQueue<>();//to ensure thread safety with concurrent requests
 
     private static final List<Transaction> transactions = new CopyOnWriteArrayList<>();//to ensure thread safety with concurrent requests
 
+    private static final int WINDOW_SIZE_SECONDS = 30; // Define the time window for recent transactions
+
     public void addTransaction (TransactionRequest request, Instant transactionTime) {
         BigDecimal amount = new BigDecimal(request.getAmount());
+
+        // Remove older transactions outside the time window
+        transactions.removeIf(transaction -> transaction.getTimestamp().isBefore(transactionTime.minusSeconds(WINDOW_SIZE_SECONDS)));
+
         transactions.add(new Transaction(amount, transactionTime));
     }
 
@@ -31,7 +41,7 @@ public class TransactionService {
 
         //Filters transactions based on their timestamp, retaining only those that occurred
         // within the last 30 seconds.
-        List<Transaction> recentTransactions = transactions.parallelStream()
+        List<Transaction> recentTransactions = transactions.stream()
                 .filter(transaction -> !transaction.getTimestamp().isBefore(thirtySecondsAgo))
                 .collect(Collectors.toList());
 
@@ -63,4 +73,8 @@ public class TransactionService {
     public static List<Transaction> getTransactions () {
         return transactions;
     }
+
+//    public static List<Transaction> getTransactions () {
+//        return new ArrayList<>(transactions);
+//    }
 }
