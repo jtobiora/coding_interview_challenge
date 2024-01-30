@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class TransactionService {
-    private static final List<Transaction> transactions = new CopyOnWriteArrayList<>();//to ensure thread safety with concurrent requests
-
+    //private static final List<Transaction> transactions = new CopyOnWriteArrayList<>();//to ensure thread safety with concurrent requests
+    private static final Queue<Transaction> transactions = new ConcurrentLinkedQueue<>();//to ensure thread safety with concurrent requests
     private static final int WINDOW_SIZE_SECONDS = 30; // Define the time window for recent transactions
 
     public void addTransaction (TransactionRequest request, Instant transactionTime) {
@@ -66,7 +66,7 @@ public class TransactionService {
     }
 
     public static List<Transaction> getTransactions () {
-        return transactions;
+        return new ArrayList<>(transactions);
     }
 
     @Scheduled(fixedRate = 30000) // Scheduled task runs every 30 seconds
