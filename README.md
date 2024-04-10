@@ -1,6 +1,6 @@
 Transaction Statistics API
 This is a RESTful API for calculating real-time statistics based on transactions. The main use case for this API is to provide statistics for the last 30 seconds of transactions.
-The API supports three main endpoints: POST /transaction, GET /transaction, and DELETE /transaction.
+The API supports three main endpoints: POST /transaction, GET /transaction and DELETE /transaction.
 
 1. Usage
    a. POST /transaction
