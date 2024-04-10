@@ -2,6 +2,7 @@ pipeline {
     agent any
      tools {
         maven 'M3'
+        docker 'Docker_Jenkins' 
     }
     stages {
         stage('Git clone') {
