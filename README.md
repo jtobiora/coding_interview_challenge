@@ -21,7 +21,7 @@ The API supports three main endpoints: POST /transaction, GET /transaction, and 
    c. DELETE /transaction
    i. Description: This endpoint deletes all transactions.
    ii. Request:
-     No additional parameters required
+     No additional parameters required.
    iii. Response:
      204 No Content: All transactions successfully deleted.
    
