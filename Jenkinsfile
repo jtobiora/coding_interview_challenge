@@ -16,7 +16,7 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                echo 'Deployment completed'
+                 sh 'docker build -t transaction-statistics-api .'
             }
         }
     }
