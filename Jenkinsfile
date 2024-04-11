@@ -2,11 +2,11 @@ pipeline {
     agent any
      tools {
         maven 'M3'
-        dockerTool 'jenkins_docker'
+        dockerTool 'docker_jenkins'
     }
   
     environment {
-        DOCKERHUB_CREDENTIALS=credentials('jenkins_docker')
+        DOCKERHUB_CREDENTIALS=credentials('docker_jenkins')
     }
     stages {
         stage('Git clone') {
