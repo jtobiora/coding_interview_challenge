@@ -2,7 +2,9 @@ pipeline {
     agent any
      tools {
         maven 'M3'
-        docker 'Docker_Jenkins' 
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS=credentials('jenkins_docker')
     }
     stages {
         stage('Git clone') {
@@ -17,7 +19,7 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                 sh 'docker build -t transaction-statistics-api .'
+                 sh 'docker build -t 514801/transaction-statistics-api .'
             }
         }
     }
