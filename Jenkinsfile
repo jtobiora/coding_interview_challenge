@@ -19,7 +19,9 @@ pipeline {
         }
         stage("Deploy") {
             steps {
-                 sh 'docker build -t 514801/transaction-statistics-api .'
+                 script {
+                     sh 'docker build -t 514801/transaction-statistics-api .'
+                 }
             }
         }
     }
