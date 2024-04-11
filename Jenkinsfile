@@ -18,12 +18,6 @@ pipeline {
                  sh 'mvn package'
             }
         }
-        stage('Initialize'){
-            steps {
-                 def dockerHome = tool 'docker_jenkins'
-                 env.PATH = "${dockerHome}/bin:${env.PATH}"
-            }
-        }
         stage("Deploy") {
             steps {
                  script {
