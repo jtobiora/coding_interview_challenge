@@ -3,10 +3,15 @@ pipeline {
      tools {
         maven 'M3'
     }
+  
     environment {
         DOCKERHUB_CREDENTIALS=credentials('jenkins_docker')
     }
     stages {
+        stage('Initialize'){
+             def dockerHome = tool 'docker_jenkins'
+             env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
         stage('Git clone') {
             steps {
                 git branch: 'main', url: 'https://github.com/jtobiora/coding_interview_challenge.git'
