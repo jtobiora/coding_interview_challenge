@@ -2,6 +2,7 @@ pipeline {
     agent any
      tools {
         maven 'M3'
+        jenkins_docker 'jenkins_docker'
     }
   
     environment {
