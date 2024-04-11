@@ -3,10 +3,6 @@ pipeline {
      tools {
         maven 'M3'
     }
-  
-    environment {
-        DOCKERHUB_CREDENTIALS=credentials('docker_jenkins')
-    }
     stages {
         stage('Git clone') {
             steps {
