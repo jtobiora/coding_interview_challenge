@@ -3,6 +3,9 @@ pipeline {
      tools {
         maven 'M3'
     }
+    environment {
+        PATH = "$PATH:/usr/local/bin" // Add the directory containing Docker executable
+    }
     stages {
         stage('Git clone') {
             steps {
